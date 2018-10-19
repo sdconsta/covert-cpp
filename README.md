@@ -23,45 +23,6 @@ Documentation Index
 8. [Development](docs/Development.md)
 9. [Future Projects](docs/FutureProjects.md)
 
-Cloning the repository
-----------------------
-
-Git repos can be cloned over either SSH or HTTPS.
-
-### SSH Setup
-
-In your web browser, navigate to your nemmerle Gitlab homepage.
-1. At the top-right of your screen, click on your avatar to open a drop-down
-menu.
-2. Select "Profile Settings".
-3. Click "SSH Keys"
-4. Follow the on-screen directions to add your public SSH key. If you do not
-have an SSH key pair, please consult with Google to find out how to
-generate a new SSH key pair on your platform.
-5. If your SSH public key was correctly registered with nemmerle, then you
-should be able to run
-
-```bash
-$ git clone git@nemmerle.hpdc.syr.edu:sdconsta/covert-cpp.git
-```
-
-### HTTPS setup
-
-In your terminal, try executing
-```bash
-$ git clone https://nemmerle.hpdc.syr.edu/sdconsta/covert-cpp.git
-```
-If `git clone` complains with a certificate error, then your platform is not
-configured to recognize InCommon CA, which is Syracuse University's CA for
-internal servers. You'll need to follow some directions (found on Google)
-for your platform to install the InCommon CA root certification found
-[here](https://www.incommon.org/cert/repository/InCommonServerCA.pem).
-Or, if you're lazy and don't care about security, you can cheat and just run
-```bash
-$ GIT_SSL_NO_VERIFY=true git clone \
-https://nemmerle.hpdc.syr.edu/sdconsta/covert-cpp.git
-```
-
 Quick Start
 -------------------
 
