@@ -52,9 +52,9 @@ void CppImplicitCastCheck::run(const MatchFinder::MatchResult &Result) {
   SourceManager &SM = *Result.SourceManager;
   DiagnosticsEngine &DE = Ctx.getDiagnostics();
 
-  SourceLocation BeginLoc = ICE->getLocStart();
+  SourceLocation BeginLoc = ICE->getBeginLoc();
   SourceLocation EndLoc =
-      Lexer::getLocForEndOfToken(ICE->getLocEnd(), 0, SM, Ctx.getLangOpts());
+      Lexer::getLocForEndOfToken(ICE->getEndLoc(), 0, SM, Ctx.getLangOpts());
   std::string explicitCast, endCast;
   explicitCast = "static_cast<" + ICE->getType().getAsString() + ">(";
   endCast = ")";

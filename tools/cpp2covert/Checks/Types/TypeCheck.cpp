@@ -304,7 +304,7 @@ class TypeRewriterCallback : public MatchFinder::MatchCallback {
     if (Fixes && !TemplateSpec) {
       const unsigned ID =
           DE.getCustomDiagID(DiagnosticsEngine::Note, "suggested rewrite:");
-      DiagnosticBuilder DB = DE.Report(DS->getLocStart(), ID);
+      DiagnosticBuilder DB = DE.Report(DS->getBeginLoc(), ID);
       DB << *Fixes;
     }
   }

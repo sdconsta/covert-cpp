@@ -154,7 +154,7 @@ QualType TypeTransformer::Transform(ASTContext &Ctx, QualType QT,
     // the AST
     TD = ClassTemplateSpecializationDecl::Create(
         Ctx, TagTypeKind::TTK_Struct, CovertDecl->getDeclContext(),
-        CovertDecl->getLocStart(), CovertDecl->getLocation(), CovertDecl,
+        CovertDecl->getBeginLoc(), CovertDecl->getLocation(), CovertDecl,
         CovertArgs, nullptr);
     CovertDecl->AddSpecialization(TD, InsertPos);
   }

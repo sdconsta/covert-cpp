@@ -71,12 +71,12 @@ void CppKeywordCheck::run(const MatchResultT &Result) {
 
   SourceLocation StartLoc;
   if (auto TL = Result.Nodes.getNodeAs<TypeLoc>("type")) {
-    StartLoc = TL->getUnqualifiedLoc().getLocStart();
+    StartLoc = TL->getUnqualifiedLoc().getBeginLoc();
   } else if (auto E = Result.Nodes.getNodeAs<Expr>("expr")) {
     if (auto CE = dyn_cast<const CallExpr>(E)) {
-      StartLoc = CE->getLocStart();
+      StartLoc = CE->getBeginLoc();
     } else if (auto DRE = dyn_cast<const DeclRefExpr>(E)) {
-      StartLoc = DRE->getLocStart();
+      StartLoc = DRE->getBeginLoc();
     } else if (auto ME = dyn_cast<const MemberExpr>(E)) {
       StartLoc = ME->getMemberLoc();
     } else {

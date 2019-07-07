@@ -40,13 +40,13 @@ void CppQualNameCheck::run(const MatchFinder::MatchResult &Result) {
   SourceLocation StartLoc;
   std::string Name;
   if (auto TL = Result.Nodes.getNodeAs<TypeLoc>("TypeLoc")) {
-    StartLoc = TL->getUnqualifiedLoc().getLocStart();
+    StartLoc = TL->getUnqualifiedLoc().getBeginLoc();
     Name = TD->getNameAsString();
     if (StartLoc == TD->getLocation()) {
       return;
     }
   } else if (auto DRE = Result.Nodes.getNodeAs<DeclRefExpr>("DeclRefExpr")) {
-    StartLoc = DRE->getLocStart();
+    StartLoc = DRE->getBeginLoc();
     auto ECD = Result.Nodes.getNodeAs<EnumConstantDecl>("EnumConstantDecl");
     assert(ECD);
     Name = ECD->getNameAsString();
