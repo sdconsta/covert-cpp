@@ -58,12 +58,6 @@ list (APPEND CMAKE_MODULE_PATH ${COVERT_CMAKE_DIR})
 set (COVERT_INCLUDE_SOURCE_DIRECTORY "${PROJECT_SOURCE_DIR}/include/")
 set (COVERT_INCLUDE_BINARY_DIRECTORY "${PROJECT_BINARY_DIR}/include/")
 
-# Configuration header
-configure_file(
-  "${COVERT_INCLUDE_SOURCE_DIRECTORY}/Config.h.in"
-  "${COVERT_INCLUDE_BINARY_DIRECTORY}/Config.h"
-  )
-
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "No build type selected, default to Debug")
   set(CMAKE_BUILD_TYPE "Debug")
