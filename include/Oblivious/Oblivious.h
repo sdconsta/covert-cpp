@@ -114,8 +114,8 @@ static inline int8_t o_copy_i8(int cond, int8_t left, int8_t right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   __asm__ volatile("test %[cond], %[cond]\n\t"
                    "cmovz %w[right], %w[left]\n\t"
-                   : [left] "+r"(left)
-                   : [right] "r"(right), [cond] "r"(cond)
+                   : [ left ] "+r"(left)
+                   : [ right ] "r"(right), [ cond ] "r"(cond)
                    : "cc");
   return left;
 #elif defined(_MSC_VER)
@@ -135,8 +135,8 @@ static inline int16_t o_copy_i16(int cond, int16_t left, int16_t right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   __asm__ volatile("test %[cond], %[cond]\n\t"
                    "cmovz %[right], %[left]\n\t"
-                   : [left] "+r"(left)
-                   : [right] "r"(right), [cond] "r"(cond)
+                   : [ left ] "+r"(left)
+                   : [ right ] "r"(right), [ cond ] "r"(cond)
                    : "cc");
   return left;
 #elif defined(_MSC_VER)
@@ -156,8 +156,8 @@ static inline int32_t o_copy_i32(int cond, int32_t left, int32_t right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   __asm__ volatile("test %[cond], %[cond]\n\t"
                    "cmovz %[right], %[left]\n\t"
-                   : [left] "+r"(left)
-                   : [right] "r"(right), [cond] "r"(cond)
+                   : [ left ] "+r"(left)
+                   : [ right ] "r"(right), [ cond ] "r"(cond)
                    : "cc");
   return left;
 #elif defined(_MSC_VER)
@@ -178,8 +178,8 @@ static inline int64_t o_copy_i64(int cond, int64_t left, int64_t right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   __asm__ volatile("test %[cond], %[cond]\n\t"
                    "cmovz %[right], %[left]\n\t"
-                   : [left] "+r"(left)
-                   : [right] "r"(right), [cond] "r"(cond)
+                   : [ left ] "+r"(left)
+                   : [ right ] "r"(right), [ cond ] "r"(cond)
                    : "cc");
   return left;
 #elif defined(_MSC_VER)
@@ -274,8 +274,8 @@ template <typename T>
 inline void o_copy_T(T &dst, bool c, const T &left, const T &right) {
   static_assert(sizeof(T) % sizeof(int32_t) == 0,
                 "sizeof(T) must be a multiple of sizeof(int32_t)");
-  //static_assert(std::is_trivially_copyable<T>::value,
-                //"T must be trivially copiable"); // FIXME
+  // static_assert(std::is_trivially_copyable<T>::value,
+  //"T must be trivially copiable"); // FIXME
   static_assert(std::is_default_constructible<T>::value,
                 "T must be trivially copiable");
   o_copy_arr<sizeof(T) / sizeof(int32_t)>(
@@ -301,18 +301,18 @@ inline void o_copy_T(T &dst, bool c, const T &left, const T &right) {
 static inline void o_swap_i8(int cond, int8_t *left, int8_t *right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   int8_t _left, _right, _tmp;
-  __asm__ volatile("test %[cond], %[cond]\n\t"
-                   "mov (%[right]), %[_right]\n\t"
-                   "mov (%[left]), %[_left]\n\t"
-                   "mov %[_left], %[_tmp]\n\t"
-                   "cmovnz %w[_right], %w[_left]\n\t"
-                   "cmovnz %w[_tmp], %w[_right]\n\t"
-                   "mov %[_left], (%[left])\n\t"
-                   "mov %[_right], (%[right])\n\t"
-                   : [_left] "=&r"(_left), [_right] "=&r"(_right),
-                     [_tmp] "=&r"(_tmp)
-                   : [left] "r"(left), [right] "r"(right), [cond] "r"(cond)
-                   : "cc", "memory");
+  __asm__ volatile(
+      "test %[cond], %[cond]\n\t"
+      "mov (%[right]), %[_right]\n\t"
+      "mov (%[left]), %[_left]\n\t"
+      "mov %[_left], %[_tmp]\n\t"
+      "cmovnz %w[_right], %w[_left]\n\t"
+      "cmovnz %w[_tmp], %w[_right]\n\t"
+      "mov %[_left], (%[left])\n\t"
+      "mov %[_right], (%[right])\n\t"
+      : [ _left ] "=&r"(_left), [ _right ] "=&r"(_right), [ _tmp ] "=&r"(_tmp)
+      : [ left ] "r"(left), [ right ] "r"(right), [ cond ] "r"(cond)
+      : "cc", "memory");
 #elif defined(_MSC_VER)
   __o_swap_i8(cond, left, right);
 #endif
@@ -333,18 +333,18 @@ static inline void o_swap_i8(int cond, int8_t *left, int8_t *right) {
 static inline void o_swap_i16(int cond, int16_t *left, int16_t *right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   int16_t _left, _right, _tmp;
-  __asm__ volatile("test %[cond], %[cond]\n\t"
-                   "mov (%[right]), %[_right]\n\t"
-                   "mov (%[left]), %[_left]\n\t"
-                   "mov %[_left], %[_tmp]\n\t"
-                   "cmovnz %[_right], %[_left]\n\t"
-                   "cmovnz %[_tmp], %[_right]\n\t"
-                   "mov %[_left], (%[left])\n\t"
-                   "mov %[_right], (%[right])\n\t"
-                   : [_left] "=&r"(_left), [_right] "=&r"(_right),
-                     [_tmp] "=&r"(_tmp)
-                   : [left] "r"(left), [right] "r"(right), [cond] "r"(cond)
-                   : "cc", "memory");
+  __asm__ volatile(
+      "test %[cond], %[cond]\n\t"
+      "mov (%[right]), %[_right]\n\t"
+      "mov (%[left]), %[_left]\n\t"
+      "mov %[_left], %[_tmp]\n\t"
+      "cmovnz %[_right], %[_left]\n\t"
+      "cmovnz %[_tmp], %[_right]\n\t"
+      "mov %[_left], (%[left])\n\t"
+      "mov %[_right], (%[right])\n\t"
+      : [ _left ] "=&r"(_left), [ _right ] "=&r"(_right), [ _tmp ] "=&r"(_tmp)
+      : [ left ] "r"(left), [ right ] "r"(right), [ cond ] "r"(cond)
+      : "cc", "memory");
 #elif defined(_MSC_VER)
   __o_swap_i16(cond, left, right);
 #endif
@@ -365,18 +365,18 @@ static inline void o_swap_i16(int cond, int16_t *left, int16_t *right) {
 static inline void o_swap_i32(int cond, int32_t *left, int32_t *right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   int32_t _left, _right, _tmp;
-  __asm__ volatile("test %[cond], %[cond]\n\t"
-                   "mov (%[right]), %[_right]\n\t"
-                   "mov (%[left]), %[_left]\n\t"
-                   "mov %[_left], %[_tmp]\n\t"
-                   "cmovnz %[_right], %[_left]\n\t"
-                   "cmovnz %[_tmp], %[_right]\n\t"
-                   "mov %[_left], (%[left])\n\t"
-                   "mov %[_right], (%[right])\n\t"
-                   : [_left] "=&r"(_left), [_right] "=&r"(_right),
-                     [_tmp] "=&r"(_tmp)
-                   : [left] "r"(left), [right] "r"(right), [cond] "r"(cond)
-                   : "cc", "memory");
+  __asm__ volatile(
+      "test %[cond], %[cond]\n\t"
+      "mov (%[right]), %[_right]\n\t"
+      "mov (%[left]), %[_left]\n\t"
+      "mov %[_left], %[_tmp]\n\t"
+      "cmovnz %[_right], %[_left]\n\t"
+      "cmovnz %[_tmp], %[_right]\n\t"
+      "mov %[_left], (%[left])\n\t"
+      "mov %[_right], (%[right])\n\t"
+      : [ _left ] "=&r"(_left), [ _right ] "=&r"(_right), [ _tmp ] "=&r"(_tmp)
+      : [ left ] "r"(left), [ right ] "r"(right), [ cond ] "r"(cond)
+      : "cc", "memory");
 #elif defined(_MSC_VER)
   __o_swap_i32(cond, left, right);
 #endif
@@ -397,18 +397,18 @@ static inline void o_swap_i32(int cond, int32_t *left, int32_t *right) {
 static inline void o_swap_i64(int cond, int64_t *left, int64_t *right) {
 #if defined(__GNUC__) || defined(__GNUG__)
   int64_t _left, _right, _tmp;
-  __asm__ volatile("test %[cond], %[cond]\n\t"
-                   "mov (%[right]), %[_right]\n\t"
-                   "mov (%[left]), %[_left]\n\t"
-                   "mov %[_left], %[_tmp]\n\t"
-                   "cmovnz %[_right], %[_left]\n\t"
-                   "cmovnz %[_tmp], %[_right]\n\t"
-                   "mov %[_left], (%[left])\n\t"
-                   "mov %[_right], (%[right])\n\t"
-                   : [_left] "=&r"(_left), [_right] "=&r"(_right),
-                     [_tmp] "=&r"(_tmp)
-                   : [left] "r"(left), [right] "r"(right), [cond] "r"(cond)
-                   : "cc", "memory");
+  __asm__ volatile(
+      "test %[cond], %[cond]\n\t"
+      "mov (%[right]), %[_right]\n\t"
+      "mov (%[left]), %[_left]\n\t"
+      "mov %[_left], %[_tmp]\n\t"
+      "cmovnz %[_right], %[_left]\n\t"
+      "cmovnz %[_tmp], %[_right]\n\t"
+      "mov %[_left], (%[left])\n\t"
+      "mov %[_right], (%[right])\n\t"
+      : [ _left ] "=&r"(_left), [ _right ] "=&r"(_right), [ _tmp ] "=&r"(_tmp)
+      : [ left ] "r"(left), [ right ] "r"(right), [ cond ] "r"(cond)
+      : "cc", "memory");
 #elif defined(_MSC_VER)
   __o_swap_i64(cond, left, right);
 #endif
@@ -557,8 +557,8 @@ static inline bool is_within_one_block_list(const struct o_mem_node *lst,
  *        src_list is aligned to the beginning of a block (this enables several
  *        optimizations).
  */
-inline int32_t o_read_list_i32(const struct o_mem_node *src_list,
-                               const int32_t *addr, bool list_aligned) {
+static inline int32_t o_read_list_i32(const struct o_mem_node *src_list,
+                                      const int32_t *addr, bool list_aligned) {
   if (is_within_one_block_list(src_list, list_aligned)) {
     return *addr;
   } else {
@@ -578,8 +578,8 @@ inline int32_t o_read_list_i32(const struct o_mem_node *src_list,
  *        src_list is aligned to the beginning of a block (this enables several
  *        optimizations).
  */
-inline int64_t o_read_list_i64(const struct o_mem_node *src_list,
-                               const int64_t *addr, bool list_aligned) {
+static inline int64_t o_read_list_i64(const struct o_mem_node *src_list,
+                                      const int64_t *addr, bool list_aligned) {
   if (is_within_one_block_list(src_list, list_aligned)) {
     return *addr;
   } else {
@@ -599,8 +599,8 @@ inline int64_t o_read_list_i64(const struct o_mem_node *src_list,
  * \param base_aligned Asserts that \p src_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline int32_t o_read_i32(const void *src_base, size_t src_size,
-                          const int32_t *addr, bool base_aligned) {
+static inline int32_t o_read_i32(const void *src_base, size_t src_size,
+                                 const int32_t *addr, bool base_aligned) {
   if (is_within_one_block(src_base, src_size, base_aligned)) {
     return *addr;
   } else {
@@ -623,8 +623,8 @@ inline int32_t o_read_i32(const void *src_base, size_t src_size,
  * \param base_aligned Asserts that \p src_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline int64_t o_read_i64(const void *src_base, size_t src_size,
-                          const int64_t *addr, bool base_aligned) {
+static inline int64_t o_read_i64(const void *src_base, size_t src_size,
+                                 const int64_t *addr, bool base_aligned) {
   if (is_within_one_block(src_base, src_size, base_aligned)) {
     return *addr;
   } else {
@@ -654,9 +654,10 @@ inline int64_t o_read_i64(const void *src_base, size_t src_size,
  *        \p src_list is aligned to the beginning of a block (this enables
  *        several optimizations).
  */
-inline void o_read_list(void *dst, size_t bytes_to_read,
-                        const struct o_mem_node *src_list, const void *addr,
-                        bool addr_is_array_elem, bool list_aligned) {
+static inline void o_read_list(void *dst, size_t bytes_to_read,
+                               const struct o_mem_node *src_list,
+                               const void *addr, bool addr_is_array_elem,
+                               bool list_aligned) {
   if (is_within_one_block_list(src_list, list_aligned)) {
     int32_t *_dst = (int32_t *)dst;
     const int32_t *_addr = (const int32_t *)addr;
@@ -685,9 +686,9 @@ inline void o_read_list(void *dst, size_t bytes_to_read,
  * \param base_aligned Asserts that \p src_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline void o_read(void *dst, size_t bytes_to_read, const void *src_base,
-                   size_t src_size, const void *addr, bool addr_is_array_elem,
-                   bool base_aligned) {
+static inline void o_read(void *dst, size_t bytes_to_read, const void *src_base,
+                          size_t src_size, const void *addr,
+                          bool addr_is_array_elem, bool base_aligned) {
   if (is_within_one_block(src_base, src_size, base_aligned)) {
     int32_t *_dst = (int32_t *)dst;
     const int32_t *_addr = (const int32_t *)addr;
@@ -730,8 +731,8 @@ inline T o_read_list_T(const o_mem_node *src_list, const T *addr,
   static_assert(alignof(T) % alignof(int32_t) == 0,
                 "alignof(T) must be a multiple of alignof(int32_t)");
   T ret;
-  o_read_list(std::addressof(ret), sizeof(T), src_list, addr, addr_is_array_elem,
-              list_aligned);
+  o_read_list(std::addressof(ret), sizeof(T), src_list, addr,
+              addr_is_array_elem, list_aligned);
   return ret;
 }
 
@@ -764,8 +765,8 @@ inline T o_read_T(const void *src_base, size_t src_size, const T *addr,
   static_assert(alignof(T) % alignof(int32_t) == 0,
                 "alignof(T) must be a multiple of alignof(int32_t)");
   T ret;
-  o_read(std::addressof(ret), sizeof(T), src_base, src_size, addr, addr_is_array_elem,
-         base_aligned);
+  o_read(std::addressof(ret), sizeof(T), src_base, src_size, addr,
+         addr_is_array_elem, base_aligned);
   return ret;
 }
 
@@ -782,8 +783,9 @@ inline T o_read_T(const void *src_base, size_t src_size, const T *addr,
  *        dst_list is aligned to the beginning of a block (this enables several
  *        optimizations).
  */
-inline void o_write_list_i32(const struct o_mem_node *dst_list, int32_t *addr,
-                             int32_t val, bool list_aligned) {
+static inline void o_write_list_i32(const struct o_mem_node *dst_list,
+                                    int32_t *addr, int32_t val,
+                                    bool list_aligned) {
   if (is_within_one_block_list(dst_list, list_aligned)) {
     *addr = val;
   } else {
@@ -802,8 +804,9 @@ inline void o_write_list_i32(const struct o_mem_node *dst_list, int32_t *addr,
  *        dst_list is aligned to the beginning of a block (this enables several
  *        optimizations).
  */
-inline void o_write_list_i64(const struct o_mem_node *dst_list, int64_t *addr,
-                             int64_t val, bool list_aligned) {
+static inline void o_write_list_i64(const struct o_mem_node *dst_list,
+                                    int64_t *addr, int64_t val,
+                                    bool list_aligned) {
   if (is_within_one_block_list(dst_list, list_aligned)) {
     *addr = val;
   } else {
@@ -821,8 +824,8 @@ inline void o_write_list_i64(const struct o_mem_node *dst_list, int64_t *addr,
  * \param base_aligned Asserts that \p dst_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline void o_write_i32(void *dst_base, size_t dst_size, int32_t *addr,
-                        int32_t val, bool base_aligned) {
+static inline void o_write_i32(void *dst_base, size_t dst_size, int32_t *addr,
+                               int32_t val, bool base_aligned) {
   if (is_within_one_block(dst_base, dst_size, base_aligned)) {
     *addr = val;
   } else {
@@ -843,8 +846,8 @@ inline void o_write_i32(void *dst_base, size_t dst_size, int32_t *addr,
  * \param base_aligned Asserts that \p dst_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline void o_write_i64(void *dst_base, size_t dst_size, int64_t *addr,
-                        int64_t val, bool base_aligned) {
+static inline void o_write_i64(void *dst_base, size_t dst_size, int64_t *addr,
+                               int64_t val, bool base_aligned) {
   if (is_within_one_block(dst_base, dst_size, base_aligned)) {
     *addr = val;
   } else {
@@ -872,9 +875,9 @@ inline void o_write_i64(void *dst_base, size_t dst_size, int64_t *addr,
  *        dst_list is aligned to the beginning of a block (this enables several
  *        optimizations).
  */
-inline void o_write_list(const struct o_mem_node *dst_list, void *addr,
-                         bool addr_is_array_elem, const void *src,
-                         size_t bytes_to_write, bool list_aligned) {
+static inline void o_write_list(const struct o_mem_node *dst_list, void *addr,
+                                bool addr_is_array_elem, const void *src,
+                                size_t bytes_to_write, bool list_aligned) {
   if (is_within_one_block_list(dst_list, list_aligned)) {
     const int32_t *_src = (const int32_t *)src;
     int32_t *_addr = (int32_t *)addr;
@@ -904,9 +907,9 @@ inline void o_write_list(const struct o_mem_node *dst_list, void *addr,
  * \param base_aligned Asserts that \p src_base is aligned to the beginning of
  *        a block (this enables several optimizations)
  */
-inline void o_write(void *dst_base, size_t dst_size, void *addr,
-                    bool addr_is_array_elem, const void *src,
-                    size_t bytes_to_write, bool base_aligned) {
+static inline void o_write(void *dst_base, size_t dst_size, void *addr,
+                           bool addr_is_array_elem, const void *src,
+                           size_t bytes_to_write, bool base_aligned) {
   if (is_within_one_block(dst_base, dst_size, base_aligned)) {
     const int32_t *_src = (const int32_t *)src;
     int32_t *_addr = (int32_t *)addr;
