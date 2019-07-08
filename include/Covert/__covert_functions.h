@@ -93,7 +93,7 @@ inline auto fp_cast(__covert_impl__::fptr<_RT, _ArgTs...> f) {
     __COVERT_LOG_CAST__(#prefix "_" #named_cast, _ArgT, _RetT);                \
                                                                                \
     using RetCast =                                                            \
-        std::conditional_t<std::is_lvalue_reference<_RetT>::value,             \
+        std::conditional_t<std::is_reference<_RetT>::value,                    \
                            _reinterpret_cast<_RetT>, _static_cast<_RetT>>;     \
     return RetCast{}(named_cast<_RetValueT>(                                   \
         __covert_extract__(make_canonical<__COVERT_LABEL__(label)>(x))));      \

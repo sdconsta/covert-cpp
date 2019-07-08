@@ -38,13 +38,11 @@ int main() {
   // lvalue to xvalue conversion
   TEST(se_static_cast<int &&, L>(x);) // CHECK: TEST
   // CHECK-NEXT: se_static_cast: 'SE<int, L> &' -> 'SE<int, L> &&'{{$}}
-  // CHECK-NEXT: Converting constructor (primitive): 'SE<int, L>(int)'{{$}}
   // CHECK-NEXT: END TEST
 
   // rvalue to xvalue conversion
   TEST(se_static_cast<int &&, L>(std::move(x));) // CHECK: TEST
   // CHECK-NEXT: se_static_cast: 'SE<int, L>' -> 'SE<int, L> &&'{{$}}
-  // CHECK-NEXT: Converting constructor (primitive): 'SE<int, L>(int)'{{$}}
   // CHECK-NEXT: END TEST
 
   // cast a non-canonical value

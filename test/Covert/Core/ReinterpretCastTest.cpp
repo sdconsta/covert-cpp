@@ -53,7 +53,6 @@ int main() {
   // 6a: lvalue to xvalue
   TEST(se_reinterpret_cast<short &&, L>(x);) // CHECK: TEST
   // CHECK-NEXT: se_reinterpret_cast: 'SE<int, L> &' -> 'SE<short, L> &&'{{$}}
-  // CHECK-NEXT: Converting constructor (primitive): 'SE<short, L>(short)'{{$}}
   // CHECK-NEXT: END TEST
 
   // non-canonical argument

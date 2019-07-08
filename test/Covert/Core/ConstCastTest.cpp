@@ -21,7 +21,6 @@ int main() {
   // rvalue to rvalue reference
   TEST(se_const_cast<char *&&, L, L>(std::move(p));) // CHECK: TEST
   // CHECK-NEXT: se_const_cast: 'SE<const char*, L, L>' -> 'SE<char*, L, L> &&'{{$}}
-  // CHECK-NEXT: Converting constructor (primitive): 'SE<char*, L, L>(char*)'{{$}}
   // CHECK-NEXT: END TEST
 
   // lvalue to rvalue
@@ -38,6 +37,5 @@ int main() {
   // lvalue to rvalue reference
   TEST(se_const_cast<char *&&, L, L>(cp);) // CHECK: TEST
   // CHECK-NEXT: se_const_cast: 'const SE<const char*, L, L> &' -> 'SE<char*, L, L> &&'{{$}}
-  // CHECK-NEXT: Converting constructor (primitive): 'SE<char*, L, L>(char*)'{{$}}
   // CHECK-NEXT: END TEST
 }
